@@ -93,6 +93,12 @@ We are using [ESLint](http://eslint.org/) for linting JavaScript code. You can c
   - Check that tests are passing: `npm test`
   - [Submit a pull request](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github) with detailed title and description
   - Wait for response from one of Vaadin Elements team members
+  
+## Fixes applied to vaadin-combo box
+
+  - Reset `value` when selected item is removed from `items` array
+  - Update `filteredItems` when `items` is changed at any level
+  - Remove `pointer-events: none` on body when combobox is opened
 
 
 ## License
