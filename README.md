@@ -99,6 +99,7 @@ We are using [ESLint](http://eslint.org/) for linting JavaScript code. You can c
   - Reset `value` when selected item is removed from `items` array
   - Update `filteredItems` when `items` is changed at any level
   - Remove `pointer-events: none` on body when combobox is opened
+  - Trigger event `vaadin-add-new` on enter when entered value is new
 
 
 ## License
