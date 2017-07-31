@@ -95,15 +95,16 @@
         (offsetParent && this._isPositionFixed(offsetParent));
     },
 
-    _maxHeight: function(targetRect) {
+    _maxHeight: function(targetRect, bottomOffset) {
+      bottomOffset = bottomOffset || 0;
       var margin = 8;
       var minHeight = 116; // Height of two items in combo-box
       var bottom = Math.min(window.innerHeight, document.body.scrollHeight - document.body.scrollTop);
 
       if (this._alignedAbove) {
-        return Math.max(targetRect.top - margin + Math.min(document.body.scrollTop, 0), minHeight) + 'px';
+        return (Math.max(targetRect.top - margin + Math.min(document.body.scrollTop, 0), minHeight) - bottomOffset ) + 'px';
       } else {
-        return Math.max(bottom - targetRect.bottom - margin, minHeight) + 'px';
+        return (Math.max(bottom - targetRect.bottom - margin, minHeight) - bottomOffset ) + 'px';
       }
     },
 
@@ -122,8 +123,12 @@
       // overlay max height is restrained by the #scroller max height which is set to 65vh in CSS.
       this.style.maxHeight = this._maxHeight(targetRect);
 
+      var addButtonHeight = 0;
+      if(this.$$('#addNewBtn')){
+        addButtonHeight = this.$$('#addNewBtn').offsetHeight;
+      }
       // we need to set height for iron-list to make its `firstVisibleIndex` work correctly.
-      this.$.selector.style.maxHeight = this._maxHeight(targetRect);
+      this.$.selector.style.maxHeight = this._maxHeight(targetRect, addButtonHeight);
 
       var overlayRect = this.getBoundingClientRect();
       this._translateX = targetRect.left - overlayRect.left + (this._translateX || 0);

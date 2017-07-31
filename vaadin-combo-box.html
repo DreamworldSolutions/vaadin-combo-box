@@ -210,6 +210,10 @@ Custom property | Description | Default
 
     <vaadin-combo-box-overlay
         id="overlay"
+        on-vaadin-add-new="_onAddNewTap"
+        add-new-button-title="[[addNewButtonTitle]]"
+        show-add-new-button="[[showAddNewButton]]"
+        input-value ="[[_inputElementValue]]"
         opened$=[[opened]]
         position-target="[[_getPositionTarget()]]"
         _focused-index="[[_focusedIndex]]"
@@ -347,6 +351,23 @@ Custom property | Description | Default
         readOnly: true,
         reflectToAttribute: true,
         notify: true
+      },
+      
+      /**
+       * The title for add new button
+       * Visible only if `addNewButtonTitle` property is true
+       */
+      addNewButtonTitle: {
+        type: String,
+        value: '+ ADD NEW'
+      },
+      
+      /**
+       * Set to true to show add new button
+       */
+      showAddNewButton: {
+        type: Boolean,
+        value: false
       }
     },
 
@@ -395,6 +416,10 @@ Custom property | Description | Default
 
     _onInputContainerFocusedChanged: function(e) {
       this._setFocused(e.detail.value);
+    },
+    
+    _onAddNewTap: function(e){
+      this.fire('vaadin-add-new', e.detail);
     }
   });
 
