@@ -20,6 +20,22 @@
   <div class="vertical-section-container centered">
     <demo-navigation></demo-navigation>
 
+    <h3>Add new Button</h3>
+
+    <demo-snippet>
+      <template>
+        <vaadin-combo-box id="demo3" label="Element"
+          add-new-button-title="+ Add New Item"
+          show-add-new-button>
+        </vaadin-combo-box>
+        <script>
+          var combobox = document.querySelector('#demo3');
+          // The elements is an array of String values.
+          combobox.items = elements;
+        </script>
+      </template>
+    </demo-snippet>
+    
     <h3>Configuring the Combo Box</h3>
 
     <demo-snippet>
