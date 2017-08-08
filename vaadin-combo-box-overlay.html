@@ -4,13 +4,18 @@
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-list/iron-list.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-styles/shadow.html">
+<link rel="import" href="../paper-styles/classes/typography.html">
+<link rel="import" href="../paper-styles/default-theme.html">
 <link rel="import" href="vaadin-overlay-behavior.html">
 <link rel="import" href="vaadin-combo-box-item.html">
 <link rel="import" href="vaadin-spinner.html">
 
 <dom-module id="vaadin-combo-box-overlay">
   <template>
+    <style include="iron-flex iron-flex-alignment"></style>
     <style>
       :host {
         position: absolute;
@@ -71,6 +76,13 @@
       #selector vaadin-combo-box-item[selected] {
         color: var(--primary-color);
       }
+      paper-button{
+        height: 48px;
+        color: var(--accent-color);
+        border-top: 1px solid var(--divider-color);
+        
+        @apply(--vaadin-combo-box-add-new-button);
+      }
     </style>
 
     <vaadin-spinner active="[[loading]]"></vaadin-spinner>
@@ -100,6 +112,11 @@
         </template>
       </iron-list>
     </div>
+    
+    <template is="dom-if" if="[[showAddNewButton]]">
+      <paper-button id="addNewBtn" on-tap="_addNewItemTap" class="layout horizontal center paper-font-button">[[addNewButtonTitle]]</paper-button>
+    </template>
+    
   </template>
 </dom-module>
 
@@ -128,7 +145,21 @@
           }
         }
       },
-
+      
+      /**
+       * show button text
+       */
+      addNewButtonTitle: {
+        type: String
+      },
+      
+      /**
+       * true to show quick creation button
+       */
+      showAddNewButton: {
+        type: Boolean,
+        value: false
+      },
       /*
        * `true` when new items are being loaded.
        */
@@ -138,7 +169,11 @@
         reflectToAttribute: true,
         observer: 'notifyResize'
       },
-
+      
+      inputValue: {
+        type: String
+      },
+      
       _selectedItem: {
         type: Object
       },
@@ -378,6 +413,13 @@
 
     _stopPropagation: function(e) {
       e.stopPropagation();
+    },
+    
+    _addNewItemTap: function(){
+      this.fire('vaadin-add-new', this.inputValue, {
+        bubbles: false
+      });
     }
+    
   });
 </script>

@@ -608,8 +608,11 @@
       if(!this.allowCustomValue && this.value && oldItems && oldItems.length && items && this._indexOfValue(this.value, items) === -1){
         this.set('value', '');
       }
-
-      this.$.overlay.hidden = !this._hasItems(items);
+      if(!this.showAddNewButton){
+        this.$.overlay.hidden = !this._hasItems(items);
+      } else {
+        this.$.overlay.$.scroller.hidden = !this._hasItems(items)
+      }
       this.$.overlay.notifyResize();
     },
 
