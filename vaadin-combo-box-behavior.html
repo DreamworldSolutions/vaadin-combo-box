@@ -388,7 +388,11 @@
     },
 
     _onOpened: function() {
-      this.$.overlay.hidden = !this._hasItems(this.$.overlay._items) && !this.loading;
+      if(!this.showAddNewButton){
+        this.$.overlay.hidden = !this._hasItems(this.$.overlay._items) && !this.loading;
+      } else {
+        this.$.overlay.$.scroller.hidden = !this._hasItems(this.$.overlay._items) && !this.loading;
+      }
 
       // With iron-list v1.3.9, calling `notifyResize()` no longer renders
       // the items synchonously. It is required to have the items rendered
