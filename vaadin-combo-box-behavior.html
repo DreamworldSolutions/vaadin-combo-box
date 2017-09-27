@@ -417,7 +417,11 @@
         // make sure input field is updated in case value doesn't change (i.e. FOO -> foo)
         this._inputElementValue = this._getItemLabel(this.selectedItem);
       } else if (this._inputElementValue === '') {
-        this._clear();
+        if (this.allowCustomValue || !this.value || !this.selectedItem) {
+          this._clear();
+        } else {
+          this._inputElementValue = this._getItemLabel(this.selectedItem);
+        }
       } else {
         if (this.allowCustomValue) {
           var e = this.fire('custom-value-set', this._inputElementValue, {cancelable: true});
@@ -609,7 +613,7 @@
       this.$.overlay.set('_items', items);
       
       // Check if allowCustomValue is not true and selectedItem is exits in new items, if not, reset value
-      if(!this.allowCustomValue && this.value && oldItems && oldItems.length && items && this._indexOfValue(this.value, items) === -1){
+      if(!this.allowCustomValue && this.value && oldItems && oldItems.length && this._indexOfValue(this.value, this.items) === -1){
         this.set('value', '');
       }
       if(!this.showAddNewButton){
