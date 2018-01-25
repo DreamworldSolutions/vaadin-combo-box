@@ -150,7 +150,7 @@ Custom property | Description | Default
           id="input"
           type="text"
           role="combobox"
-          autocomplete="off"
+          autocomplete$="[[autocomplete]]"
           autocapitalize="none"
           bind-value="{{_inputElementValue}}"
           aria-label$="[[label]]"
@@ -368,6 +368,14 @@ Custom property | Description | Default
       showAddNewButton: {
         type: Boolean,
         value: false
+      },
+      
+      /**
+       * indicate autocomplete status of input.
+       */
+      autocomplete: {
+        type: String,
+        value: "off"
       }
     },
 
