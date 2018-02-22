@@ -382,7 +382,15 @@ Custom property | Description | Default
     listeners: {
       'inputContainer.focused-changed': '_onInputContainerFocusedChanged'
     },
-
+    
+    observers: ['_manageFocusedIndex(opened)'],
+    
+    _manageFocusedIndex: function(opened){
+      if(opened && (!this._inputElementValue || !this._inputElementValue.trim())){
+        this.set('_focusedIndex', 0);
+      }
+    },
+    
     attached: function() {
       this._setInputElement(this.$.input);
 
