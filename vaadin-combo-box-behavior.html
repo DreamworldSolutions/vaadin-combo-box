@@ -272,6 +272,10 @@
         }
       } else {
         this.open();
+        if (this.$.overlay._items && !this.selectedItem) {
+          this._focusedIndex = Math.min(this.$.overlay._items.length - 1, this._focusedIndex + 1);
+          this._prefillFocusedItemLabel();
+        }
       }
     },
 
