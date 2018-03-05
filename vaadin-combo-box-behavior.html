@@ -411,7 +411,19 @@
     _onClosed: function() {
       if (this._focusedIndex > -1) {
         var focusedItem = this.$.overlay._items[this._focusedIndex];
-        if (this.selectedItem !== focusedItem) {
+        var focusedItemLabel = this._getItemLabel(focusedItem).toLowerCase();
+        var inputValue = this.filter && this.filter.trim() ? this.filter.trim().toLowerCase(): undefined;
+        
+        if(focusedItemLabel !== inputValue && !this.selectedItem){
+          if (!this.allowCustomValue) {
+            this._inputElementValue = undefined;
+            this._focusedIndex = -1;
+          }
+          
+          return;
+        }
+        
+        if (this.selectedItem !== focusedItem && focusedItemLabel === inputValue) {
           this.selectedItem = focusedItem;
         }
         // make sure input field is updated in case value doesn't change (i.e. FOO -> foo)
@@ -580,7 +592,11 @@
         this._focusedIndex = (this.opened || this._userDefinedFilter) ?
             this.$.overlay.indexOfLabel(this.filter) :
             this._indexOfValue(this.value, this.filteredItems);
-
+        
+        if(this._focusedIndex === -1 && this.filter && this.filteredItems && this.filteredItems.length){
+          this._focusedIndex = 0;
+        }
+        
         // async needed to reposition correctly after filtering
         // (especially when aligned on top of input)
         this.async(function() {
