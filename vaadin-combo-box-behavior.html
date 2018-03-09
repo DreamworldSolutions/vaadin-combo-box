@@ -148,6 +148,12 @@
         type: HTMLElement,
         readOnly: true
       },
+      
+      _enterKeyTap: {
+        type: Boolean,
+        value: false
+      },
+      
       _toggleElement: Object,
       _clearElement: Object,
 
@@ -312,7 +318,9 @@
     _onEnter: function(e) {
       // should close on enter when custom values are allowed, input field is cleared, or when an existing
       // item is focused with keyboard.
+      
       if (this.opened && (this.allowCustomValue || this._inputElementValue === '' || this._focusedIndex > -1)) {
+        this.set('_enterKeyTap', true);
         this.close();
 
         // Do not submit the surrounding form.
@@ -411,17 +419,38 @@
     _onClosed: function() {
       if (this._focusedIndex > -1) {
         var focusedItem = this.$.overlay._items[this._focusedIndex];
-        if (this.selectedItem !== focusedItem) {
-          this.selectedItem = focusedItem;
+        var focusedItemLabel = this._getItemLabel(focusedItem).toLowerCase();
+        var inputValue = this._inputElementValue && this._inputElementValue.trim() ? this._inputElementValue.trim().toLowerCase(): undefined;
+        
+        if(!this._enterKeyTap && focusedItemLabel !== inputValue && !this.selectedItem){
+          if (!this.allowCustomValue) {
+            this._inputElementValue = undefined;
+            this._focusedIndex = -1;
+          }
+          
+          this.set('_enterKeyTap', false);
+          return;
+        }
+        
+        if(this._enterKeyTap){
+          if (this.selectedItem !== focusedItem) {
+            this.selectedItem = focusedItem;
+          }
+        } else {
+          if (this.selectedItem !== focusedItem && focusedItemLabel === inputValue) {
+            this.selectedItem = focusedItem;
+          }
         }
         // make sure input field is updated in case value doesn't change (i.e. FOO -> foo)
         this._inputElementValue = this._getItemLabel(this.selectedItem);
+        this.set('_enterKeyTap', false);
       } else if (this._inputElementValue === '') {
         if (this.allowCustomValue || !this.value || !this.selectedItem) {
           this._clear();
         } else {
           this._inputElementValue = this._getItemLabel(this.selectedItem);
         }
+        this.set('_enterKeyTap', false);
       } else {
         if (this.allowCustomValue) {
           var e = this.fire('custom-value-set', this._inputElementValue, {cancelable: true});
@@ -433,6 +462,7 @@
         } else {
           this._inputElementValue = this._getItemLabel(this.selectedItem);
         }
+        this.set('_enterKeyTap', false);
       }
 
       this._detectAndDispatchChange();
@@ -580,7 +610,11 @@
         this._focusedIndex = (this.opened || this._userDefinedFilter) ?
             this.$.overlay.indexOfLabel(this.filter) :
             this._indexOfValue(this.value, this.filteredItems);
-
+        
+        if(this._focusedIndex === -1 && this.filter && this.filteredItems && this.filteredItems.length){
+          this._focusedIndex = 0;
+        }
+        
         // async needed to reposition correctly after filtering
         // (especially when aligned on top of input)
         this.async(function() {
