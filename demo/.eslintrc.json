@@ -3,8 +3,11 @@
     "no-unused-vars": 0
   },
   "globals": {
+    "ComboBoxDemo": false,
+    "DemoReadyEventEmitter": false,
     "elements": false,
-    "elementsJson": false
+    "users": false,
+    "elementsJson": false,
+    "HTMLImports": false
   }
 }
-

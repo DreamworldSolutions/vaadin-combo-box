@@ -1,48 +1,75 @@
-![Bower version](https://img.shields.io/bower/v/vaadin-combo-box.svg) 
+![Bower version](https://img.shields.io/bower/v/vaadin-combo-box.svg)
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/vaadin/vaadin-combo-box)
-[![Build Status](https://travis-ci.org/vaadin/vaadin-combo-box.svg?branch=master)](https://travis-ci.org/vaadin/vaadin-combo-box) 
+![Polymer 2 supported](https://img.shields.io/badge/Polymer2-supported-blue.svg)
+[![Build Status](https://travis-ci.org/vaadin/vaadin-combo-box.svg?branch=master)](https://travis-ci.org/vaadin/vaadin-combo-box)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vaadin/vaadin-core-elements?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # &lt;vaadin-combo-box&gt;
 
-[Live Demo ↗](https://cdn.vaadin.com/vaadin-core-elements/master/vaadin-combo-box/demo/)
+[Live Demo ↗](https://vaadin.com/elements/vaadin-combo-box/html-examples)
+|
+[API documentation ↗](https://vaadin.com/elements/vaadin-combo-box/html-api)
 
-[&lt;vaadin-combo-box&gt;](https://vaadin.com/elements/-/element/vaadin-combo-box) is a [Polymer](http://polymer-project.org) element combining a dropdown list with an input field for filtering the list of items, part of the [Vaadin Core Elements](https://vaadin.com/elements).
+[&lt;vaadin-combo-box&gt;](https://vaadin.com/elements/vaadin-combo-box) is a [Polymer](http://polymer-project.org) element combining a dropdown list with an input field for filtering the list of items, part of the [Vaadin Core Elements](https://vaadin.com/elements).
 
 <!--
 ```
 <custom-element-demo height="300">
   <template>
     <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../iron-ajax/iron-ajax.html">
+    <link rel="import" href="../paper-item/all-imports.html">
     <link rel="import" href="vaadin-combo-box.html">
+    <style>
+      vaadin-combo-box {
+        width: 300px;
+      }
+    </style>
     <next-code-block></next-code-block>
   </template>
 </custom-element-demo>
 ```
 -->
 ```html
-<vaadin-combo-box label="Element"
-    items='["Cadmium","Caesium","Calcium","Californium","Carbon","Scandium"]'>
-</vaadin-combo-box>
+<dom-bind>
+  <template is="dom-bind">
+    <iron-ajax url="https://randomuser.me/api?results=100&inc=name,email,picture" last-response="{{response}}" auto></iron-ajax>
+
+    <vaadin-combo-box items="[[response.results]]" item-value-path="email" item-label-path="email">
+      <template>
+        <style>
+          paper-icon-item img {
+            border-radius: 50%;
+            margin-right: 10px;
+          }
+        </style>
+        <paper-icon-item>
+          <img src="[[item.picture.thumbnail]]" slot="item-icon">
+          <paper-item-body two-line>
+            <div>[[item.name.first]] [[item.name.last]]</div>
+            <div secondary>[[item.email]]</div>
+          </paper-item-body>
+        </paper-icon-item>
+      </template>
+    </vaadin-combo-box>
+  </template>
+</dom-bind>
+
+
 ```
 
-[<img src="https://raw.githubusercontent.com/vaadin/vaadin-combo-box/master/docs/img/vaadin-combo-box-overview.png" width="387" alt="Screenshot of vaadin-combo-box" />](https://vaadin.com/elements/-/element/vaadin-combo-box)
+[<img src="https://raw.githubusercontent.com/vaadin/vaadin-combo-box/master/docs/img/vaadin-combo-box-item-template-material.png" width="311" alt="Screenshot of vaadin-combo-box" />](https://vaadin.com/elements/-/element/vaadin-combo-box)
 
 
-## Contributing
+## Running demos and tests in browser
 
 1. Fork the `vaadin-combo-box` repository and clone it locally.
 
 1. Make sure you have [npm](https://www.npmjs.com/) installed.
 
-1. When in the `vaadin-combo-box` directory, run `npm install` to install dependencies.
+1. When in the `vaadin-combo-box` directory, run `npm install` and then `bower install` to install dependencies.
 
-
-## Running demos and tests in browser
-
-1. Install [polyserve](https://www.npmjs.com/package/polyserve): `npm install -g polyserve`
-
-1. When in the `vaadin-combo-box` directory, run `polyserve --open`, browser will automatically open the component API documentation.
+1. Run `polymer serve --open`, browser will automatically open the component API documentation.
 
 1. You can also open demo or in-browser tests by adding **demo** or **test** to the URL, for example:
 
@@ -52,9 +79,7 @@
 
 ## Running tests from the command line
 
-1. Install [web-component-tester](https://www.npmjs.com/package/web-component-tester): `npm install -g web-component-tester`
-
-1. When in the `vaadin-combo-box` directory, run `wct` or `npm test`
+1. When in the `vaadin-combo-box` directory, run `polymer test`
 
 
 ## Following the coding style
@@ -65,7 +90,7 @@ We are using [ESLint](http://eslint.org/) for linting JavaScript code. You can c
 ## Creating a pull request
 
   - Make sure your code is compliant with our code linters: `gulp lint`
-  - Check that tests are passing: `npm test`
+  - Check that tests are passing: `polymer test`
   - [Submit a pull request](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github) with detailed title and description
   - Wait for response from one of Vaadin Elements team members
 

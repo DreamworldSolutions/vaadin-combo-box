@@ -1,7 +1,7 @@
-sudo: false
+sudo: true
 dist: trusty
 language: node_js
-node_js: stable
+node_js: 8.9
 
 cache:
   directories:
@@ -11,7 +11,18 @@ addons:
   firefox: latest
   google-chrome: latest
 
+install:
+  - npm install
+  - bower install
+
+before_script:
+  - gulp lint version:check
+  - xvfb-run -s '-screen 0 1024x768x24' wct
+
 script:
-  - gulp lint
-  - travis_retry xvfb-run -s '-screen 0 1024x768x24' wct -l chrome -l firefox
-  - travis_retry xvfb-run -s '-screen 0 1024x768x24' wct -l chrome -l firefox --dom=shadow
+  - if [[ "$TRAVIS_EVENT_TYPE" != "pull_request" && "$TRAVIS_BRANCH" != quick/* ]]; then
+      wct --env saucelabs;
+    fi
+  - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then
+      wct --env saucelabs-cron;
+    fi

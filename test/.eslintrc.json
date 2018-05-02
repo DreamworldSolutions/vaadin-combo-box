@@ -6,7 +6,8 @@
     "sinon": false,
     "WCT": false,
     "ios": false,
-    "chrome": false,
+    "edge": false,
+    "linux": false,
     "getItemArray": false,
     "before": false,
     "beforeEach": false,
@@ -17,10 +18,15 @@
     "expect": false,
     "it": false,
     "fixture": false,
+    "fire": false,
+    "fireMousedownMouseupClick": false,
+    "getCustomPropertyValue": false,
     "System": false,
     "HTMLImports": false,
     "MockInteractions": false,
     "MockTouchInteractions": false,
-    "touchDevice": false
+    "touchDevice": false,
+    "hackIE11Focus": false,
+    "_fixture": false
   }
 }
