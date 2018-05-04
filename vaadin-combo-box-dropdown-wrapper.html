@@ -38,7 +38,7 @@ This program is available under Apache License Version 2.0, available at https:/
         <div id="scroller" on-click="_stopPropagation" hidden$="[[loading]]">
           <iron-list id="selector" role="listbox" items="[[_items]]" scroll-target="[[_scroller]]">
             <template>
-              <vaadin-combo-box-item on-click="_onItemClick" index="[[index]]" item="[[item]]" label="[[getItemLabel(item)]]" selected="[[_isItemSelected(item, _selectedItem)]]"
+              <vaadin-combo-box-item on-touchstart="_onTouchStart" on-touchend="_onTouchEnd" on-click="_onItemClick" index="[[index]]" item="[[item]]" label="[[getItemLabel(item)]]" selected="[[_isItemSelected(item, _selectedItem)]]"
                 role$="[[_getAriaRole(index)]]" aria-selected$="[[_getAriaSelected(_focusedIndex,index)]]" focused="[[_isItemFocused(_focusedIndex,index)]]" touch-device$="[[touchDevice]]">
               </vaadin-combo-box-item>
             </template>
@@ -219,10 +219,28 @@ This program is available under Apache License Version 2.0, available at https:/
         if (e.detail && e.detail.sourceEvent && e.detail.sourceEvent.stopPropagation) {
           this._stopPropagation(e.detail.sourceEvent);
         }
-
+        
         this.dispatchEvent(new CustomEvent('selection-changed', {detail: {item: e.model.item}}));
       }
 
+      _onTouchStart (e){
+        this._touchStartEl = e.srcElement;
+        this._startTimeStamp = e.timeStamp;
+      }
+      
+      _onTouchEnd (e){
+        if(!e || !e.model || !e.model.item){
+          return;
+        }
+        
+        var endTimeStamp = e.timeStamp;
+        var differenceInTime = endTimeStamp - this._startTimeStamp;
+        
+        if(this._touchStartEl === e.srcElement && differenceInTime < 96){
+          this.dispatchEvent(new CustomEvent('selection-changed', {detail: {item: e.model.item}}));
+        }
+      }
+      
       /**
        * Gets the index of the item with the provided label.
        * @return {Number}
