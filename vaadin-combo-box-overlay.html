@@ -416,7 +416,7 @@
     },
     
     _addNewItemTap: function(){
-      this.fire('vaadin-add-new', this.inputValue, {
+      this.fire('vaadin-add-new', this.inputValue && this.inputValue.trim(), {
         bubbles: false
       });
     }

@@ -194,6 +194,9 @@
 
     _onBlur: function() {
     	this._setFocused(false);
+    	if(this._inputElementValue && this._inputElementValue.trim){
+    	  this.set('_inputElementValue', this._inputElementValue.trim());
+    	}
       if (!this._closeOnBlurIsPrevented) {
         this.close();
       }
@@ -330,7 +333,7 @@
       // fired event when entered value is new or not found from items array
       if(this.showAddNewButton){
         if(!this.filteredItems || !this.filteredItems.length){
-          this.fire('vaadin-add-new', this._inputElementValue);
+          this.fire('vaadin-add-new', this._inputElementValue && this._inputElementValue.trim());
         }
       }
     },

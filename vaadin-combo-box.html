@@ -428,7 +428,7 @@ Custom property | Description | Default
     
     _onAddNewTap: function(e){
       this.blur();
-      this.fire('vaadin-add-new', e.detail);
+      this.fire('vaadin-add-new', e.detail && e.detail.trim());
     }
   });
 
