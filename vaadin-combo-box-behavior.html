@@ -45,7 +45,8 @@
     	  type: Boolean,
     	  notify: true,
     	  readOnly: true,
-    	  value: false
+    	  value: false,
+    	  observer: '_onFocusedChanged'
       },
       /**
        * The `String` value for the selected item of the combo box. Provides
@@ -181,7 +182,13 @@
       'tap': '_onTap',
       'overlay.selection-changed': '_overlaySelectedItemChanged'
     },
-
+    
+    _onFocusedChanged: function(){
+      if(!this.focused){
+        this.set('filter', '');
+      }
+    },
+    
     ready: function() {
       // The value property is also defined in IronFormElementBehavior, which
       // will mix up the default value if set in the property.
