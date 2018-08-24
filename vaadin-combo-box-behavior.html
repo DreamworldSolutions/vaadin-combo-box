@@ -184,8 +184,8 @@
     },
     
     _onFocusedChanged: function(){
-      if(this.focused){
-        this._filterChanged(this._inputElementValue);
+      if(!this.focused){
+        this.set('filter', '');
       }
     },
     
