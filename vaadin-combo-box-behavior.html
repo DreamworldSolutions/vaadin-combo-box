@@ -411,6 +411,7 @@
       if(!this.showAddNewButton){
         this.$.overlay.hidden = !this._hasItems(this.$.overlay._items) && !this.loading;
       } else {
+        this.$.overlay.hidden = false;
         this.$.overlay.$.scroller.hidden = !this._hasItems(this.$.overlay._items) && !this.loading;
       }
 
