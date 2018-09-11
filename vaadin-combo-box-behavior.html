@@ -45,8 +45,7 @@
     	  type: Boolean,
     	  notify: true,
     	  readOnly: true,
-    	  value: false,
-    	  observer: '_onFocusedChanged'
+    	  value: false
       },
       /**
        * The `String` value for the selected item of the combo box. Provides
@@ -181,12 +180,6 @@
       'keydown': '_onKeyDown',
       'tap': '_onTap',
       'overlay.selection-changed': '_overlaySelectedItemChanged'
-    },
-    
-    _onFocusedChanged: function(){
-      if(!this.focused){
-       this._filterChanged('')
-      }
     },
     
     ready: function() {
@@ -442,6 +435,7 @@
           }
           
           this.set('_enterKeyTap', false);
+          this.filter = '';
           return;
         }
         
