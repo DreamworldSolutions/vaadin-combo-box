@@ -333,6 +333,7 @@
       // fired event when entered value is new or not found from items array
       if(this.showAddNewButton){
         if(!this.filteredItems || !this.filteredItems.length){
+          this.opened = false;
           this.fire('vaadin-add-new', this._inputElementValue && this._inputElementValue.trim());
         }
       }
